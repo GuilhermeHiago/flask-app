@@ -22,11 +22,16 @@ def game_register_form():
 
 @app.route('/gamecreate', methods=['POST',])
 def game_create():
-    title = request.form('title')
-    category = request.form('category')
-    console = request.form('console')
+
+    # for i in request.form:
+    #     print(request.form[0])
+    title = request.form['game-title']
+    category = request.form['category']
+    console = request.form['console']
 
     game = Game(title, category)
     game_list.append(game)
     
     return render_template('list.html', title="Games", items=game_list)
+
+app.run(debug=True)
