@@ -14,12 +14,14 @@
             <thead class="thead-default">
                 <tr>
                     <th>Name</th>
+                    <th>Category</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in items %}
                 <tr>
-                    <td>{{ item }}</td>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.category }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
