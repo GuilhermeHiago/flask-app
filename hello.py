@@ -1,9 +1,15 @@
+from mailbox import NotEmptyError
 from flask import Flask, render_template, request, redirect, session, flash, url_for
 
 class Game:
     def __init__(self, title, category) -> None:
         self.title = title
         self.category = category
+
+class User():
+    def __init__(self, name, password) -> None:
+        self.name = name
+        self.password = password
 
 game1 = Game('God of War', 'Hank and Slash')
 game2 = Game('Valorant', 'FPS')
