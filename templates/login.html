@@ -20,7 +20,8 @@
         {% endwith %}
 
         <h1>Login</h1>
-        <form method="POST" action="/authenticate" method="post">
+        <form method="POST" action="{{ url_for('authenticate') }}" method="post">
+            <input type="hidden" name="next" value="{{ next }}">
             <p><label>User Name:</label> <input class="form-control" type="text" name="user" required></p>
             <p><label>Password:</label> <input class="form-control" type="password" name="password" required></p>
             <p><button class="btn btn-primary" type="submit">Login</button></p>
