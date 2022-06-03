@@ -1,5 +1,5 @@
-from mailbox import NotEmptyError
 from flask import Flask, render_template, request, redirect, session, flash, url_for
+import MySQLdb
 
 class Game:
     def __init__(self, title, category) -> None:
