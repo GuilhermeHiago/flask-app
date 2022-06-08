@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for
 import MySQLdb
+import sys
 
 class Game:
     def __init__(self, title, category) -> None:
@@ -10,6 +11,11 @@ class User():
     def __init__(self, name, password) -> None:
         self.name = name
         self.password = password
+
+user1 = User('user1', '1111')
+user2 = User('user2', '2222')
+
+users = {user1.name:user1, user2.name: user2}
 
 game1 = Game('God of War', 'Hank and Slash')
 game2 = Game('Valorant', 'FPS')
@@ -25,11 +31,11 @@ def index():
 
 @app.route('/gameregister')
 def game_register():
-    if session['current_user'] == 'admin':
-        return render_template('gameregisterform.html', title="New Game")
+    if 'current_user' not in session or session['current_user'] == None:
+        flash('Authentication Required')
+        return redirect(url_for('login', next=url_for('game_register')))
 
-    flash('Authentication Required')
-    return redirect(url_for('login', next=url_for('game_register')))
+    return render_template('gameregisterform.html', title="New Game")
 
 @app.route('/gamecreate', methods=['POST',])
 def game_create():
@@ -53,16 +59,21 @@ def login():
 
 @app.route('/authenticate', methods=['POST',])
 def authenticate():
-    if "1234" == request.form['password']:
-        session['current_user'] = request.form['user']
-        flash(session['current_user'] + ' loged in')
+    
+    if request.form['user'] in users:
+        user = users[request.form['user']]
 
-        next_page = request.form['next']
-        print(next_page)
-        return redirect(next_page)
-    else:
-        flash('Login Failed')
-        return redirect(url_for("login"))
+        if request.form['password'] == user.password:
+            session['current_user'] = user.name
+            flash(user.name + ' loged in')
+
+            next_page = request.form['next']
+
+            return redirect(next_page)
+
+    flash('Login Failed')
+    return redirect(url_for("login"))
+    
 
 @app.route('/logout')
 def logout():
